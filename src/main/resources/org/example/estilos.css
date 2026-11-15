@@ -1,0 +1,44 @@
+.fondo { -fx-background-color: linear-gradient(to bottom right, #eef1ff, #f9f9fc); }
+.label { -fx-text-fill: #2b2d42; -fx-font-size: 14px; }
+.titulo { -fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #3f51b5; }
+.subtitulo { -fx-font-size: 16px; -fx-font-weight: bold; }
+.pequeno { -fx-font-size: 11px; -fx-text-fill: #8a8da6; }
+.error { -fx-text-fill: #d32f2f; }
+
+.text-field, .password-field {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #c9cdea;
+    -fx-border-radius: 8;
+    -fx-padding: 8 10 8 10;
+}
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #5c6bc0;
+    -fx-effect: dropshadow(gaussian, rgba(92,107,192,0.35), 8, 0, 0, 0);
+}
+
+.button {
+    -fx-background-color: #5c6bc0;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 9 18 9 18;
+    -fx-cursor: hand;
+}
+.button:hover { -fx-background-color: #3f51b5; }
+
+.toggle-button {
+    -fx-background-color: #b0b3c6;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 16;
+    -fx-cursor: hand;
+}
+.toggle-button:selected { -fx-background-color: #43a047; }
+
+.oscuro { -fx-background-color: #1e1e2e; }
+.oscuro .label { -fx-text-fill: #f0f0f5; }
+.oscuro .titulo { -fx-text-fill: #9fa8ff; }
+.oscuro .pequeno { -fx-text-fill: #aaaabc; }
+.oscuro .button { -fx-background-color: #7986cb; }
+.oscuro .button:hover { -fx-background-color: #9fa8da; }
