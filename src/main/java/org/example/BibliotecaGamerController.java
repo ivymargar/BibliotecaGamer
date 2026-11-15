@@ -4,6 +4,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.ListView;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import java.io.IOException;
 
 /**
  * Controlador principal de la aplicación Biblioteca Gamer.
@@ -133,6 +138,82 @@ public class BibliotecaGamerController {
                         mostrarVideojuegos(categoria);
                     }
                 });
+
+        /*
+         * Detectamos el doble clic realizado sobre uno de los
+         * videojuegos mostrados en el ListView.
+         */
+        listaVideojuegos.setOnMouseClicked(event -> {
+
+            /*
+             * Comprobamos que el usuario haya realizado
+             * exactamente dos clics.
+             */
+            if (event.getClickCount() == 2) {
+
+                /*
+                 * Obtenemos el videojuego seleccionado.
+                 */
+                String juegoSeleccionado =
+                        listaVideojuegos.getSelectionModel().getSelectedItem();
+
+                /*
+                 * Solo abrimos la ficha si realmente existe
+                 * un videojuego seleccionado.
+                 */
+                if (juegoSeleccionado != null) {
+
+                    abrirInformacionJuego(juegoSeleccionado);
+                }
+            }
+        });
+    }
+
+    /**
+     * Abre una nueva ventana con la información
+     * correspondiente al videojuego seleccionado.
+     *
+     * @param juego nombre del videojuego seleccionado
+     */
+    private void abrirInformacionJuego(String juego) {
+
+        try {
+
+            /*
+             * Cargamos el archivo FXML correspondiente
+             * a la ficha de información del videojuego.
+             */
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("revisionjuegos.fxml")
+            );
+
+            Parent root = loader.load();
+
+            /*
+             * Creamos una nueva escena utilizando
+             * el contenido del archivo FXML.
+             */
+            Scene scene = new Scene(root);
+
+            /*
+             * Creamos una nueva ventana independiente
+             * para mostrar la ficha del videojuego.
+             */
+            Stage stage = new Stage();
+
+            stage.setScene(scene);
+            stage.setTitle("Información - " + juego);
+            stage.setResizable(false);
+
+            /*
+             * Mostramos la nueva ventana.
+             */
+            stage.show();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
     }
 
     /**
