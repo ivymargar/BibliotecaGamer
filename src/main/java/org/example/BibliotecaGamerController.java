@@ -9,6 +9,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.Pagination;
+import javafx.scene.control.ToolBar;
 
 /**
  * Controlador principal de la aplicación Biblioteca Gamer.
@@ -32,6 +37,68 @@ public class BibliotecaGamerController {
      */
     @FXML
     private TreeView<String> arbolBiblioteca;
+
+    /**
+     * ListView utilizado para mostrar los videojuegos
+     * correspondientes a la categoría seleccionada en el TreeView.
+     */
+    @FXML
+    private ListView<String> listaVideojuegos;
+
+
+// ==========================================================
+// COMPONENTES DE NAVEGACIÓN
+// Desarrollados originalmente por Iván Márquez Sánchez
+// e integrados en la pantalla principal Biblioteca Gamer.
+// ==========================================================
+
+    /**
+     * Barra de herramientas utilizada para la navegación principal.
+     */
+    @FXML
+    private ToolBar barraNavegacion;
+
+    /**
+     * Botón correspondiente a la sección Inicio.
+     */
+    @FXML
+    private Button btnInicio;
+
+    /**
+     * Botón correspondiente a la biblioteca de videojuegos.
+     */
+    @FXML
+    private Button btnBiblioteca;
+
+    /**
+     * Botón utilizado para acceder a la incorporación de videojuegos.
+     */
+    @FXML
+    private Button btnAnadir;
+
+    /**
+     * Botón utilizado para acceder al perfil.
+     */
+    @FXML
+    private Button btnPerfil;
+
+    /**
+     * Componente utilizado para paginar los videojuegos mostrados.
+     */
+    @FXML
+    private Pagination paginacion;
+
+    /**
+     * Hipervínculo utilizado para acceder a información adicional.
+     */
+    @FXML
+    private Hyperlink enlaceInfo;
+
+    /**
+     * Etiqueta que indica la sección actual de la aplicación.
+     */
+    @FXML
+    private Label lblEstado;
 
     /**
      * Inicializa los componentes de la vista.
@@ -264,15 +331,4 @@ public class BibliotecaGamerController {
                 break;
         }
     }
-
-    /**
-     * ListView utilizado para mostrar los videojuegos
-     * correspondientes a la categoría seleccionada en el TreeView.
-     *
-     * Está conectado con el componente cuyo fx:id
-     * es "listaVideojuegos" en el archivo FXML.
-     */
-    @FXML
-    private ListView<String> listaVideojuegos;
-
 }
