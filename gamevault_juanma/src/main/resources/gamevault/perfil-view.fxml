@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="raiz" alignment="TOP_CENTER" spacing="18.0" prefWidth="380.0" prefHeight="420.0"
+      styleClass="fondo" stylesheets="@estilos.css"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="gamevault.PerfilController">
+   <padding>
+      <Insets top="30.0" right="40.0" bottom="30.0" left="40.0"/>
+   </padding>
+
+   <Label styleClass="titulo" text="MI PERFIL"/>
+   <Label fx:id="lblBienvenida" text="Bienvenido"/>
+   <Label styleClass="subtitulo" text="Preferencias"/>
+
+   <HBox alignment="CENTER_LEFT" spacing="10.0">
+      <Label text="Modo oscuro"/>
+      <Region HBox.hgrow="ALWAYS"/>
+      <ToggleButton fx:id="tglModoOscuro" minWidth="70.0" onAction="#onModoOscuro" text="OFF"/>
+   </HBox>
+
+   <HBox alignment="CENTER_LEFT" spacing="10.0">
+      <Label text="Mostrar solo favoritos"/>
+      <Region HBox.hgrow="ALWAYS"/>
+      <ToggleButton fx:id="tglFavoritos" minWidth="70.0" onAction="#onFavoritos" text="OFF"/>
+   </HBox>
+
+   <Label fx:id="lblResumen" styleClass="pequeno"/>
+   <Region VBox.vgrow="ALWAYS"/>
+   <Button fx:id="btnCerrarSesion" onAction="#onCerrarSesion" text="Cerrar sesión"/>
+</VBox>
