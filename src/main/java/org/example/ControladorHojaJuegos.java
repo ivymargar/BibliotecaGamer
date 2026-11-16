@@ -78,8 +78,8 @@ public class ControladorHojaJuegos {
                 )
         );
     }
-    @FXML
-    private void IrAtras(){
-
+     @FXML
+    private void IrAtras() throws IOException {
+        App.setRoot("bibliotecaGamer");
     }
 }
