@@ -4,6 +4,9 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class ControladorHojaJuegos {
 
@@ -33,6 +36,11 @@ public class ControladorHojaJuegos {
     private HBox HBoxLogros;
     @FXML
     private Button Atras;
+
+    BibliotecaJuegos biblio=new BibliotecaJuegos();
+    Videojuego juego1=new Videojuego("Minecraft",2009,"Mojang Studios","PC","Sandbox");
+    Videojuego juego2=new Videojuego("Hollow Knight",2016,"Team Cherry","PC","Metroidvania");
+    Videojuego juego3= new Videojuego("Stardew Valley",2016,"ConcernedApe","PC","Juego de Granjas");
     /**
      * Metodo que se activa al iniciar el programa.
      * El metodo ayuda a configurar las partes del programa para evitar errores.
@@ -42,6 +50,9 @@ public class ControladorHojaJuegos {
      */
     @FXML
     private void initialize(){
+        biblio.anadirJuego(juego1);
+        biblio.anadirJuego(juego2);
+        biblio.anadirJuego(juego3);
         HBoxLogros.setOpacity(0);
         MiPuntuacion.textProperty().bind(
                 Bindings.format("%.1f",Puntuacion.valueProperty())
@@ -78,8 +89,10 @@ public class ControladorHojaJuegos {
                 )
         );
     }
-     @FXML
+    @FXML
     private void IrAtras() throws IOException {
-        App.setRoot("bibliotecaGamer");
+        Stage stage = (Stage) Atras.getScene().getWindow();
+
+        stage.close();
     }
 }
