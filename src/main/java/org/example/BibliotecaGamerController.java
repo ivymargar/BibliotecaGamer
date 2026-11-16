@@ -331,4 +331,58 @@ public class BibliotecaGamerController {
                 break;
         }
     }
+
+    // ==========================================================
+// MÉTODOS DE NAVEGACIÓN
+// Desarrollados originalmente por Iván Márquez Sánchez
+// e integrados en BibliotecaGamerController.
+// ==========================================================
+
+    /**
+     * Gestiona la acción del botón Inicio.
+     * Actualiza la etiqueta inferior indicando la sección seleccionada.
+     */
+    @FXML
+    private void onInicio() {
+        lblEstado.setText("Sección: Inicio");
+    }
+
+    /**
+     * Gestiona la acción del botón Biblioteca.
+     * Actualiza la etiqueta inferior indicando que el usuario
+     * se encuentra en la biblioteca de videojuegos.
+     */
+    @FXML
+    private void onBiblioteca() {
+        lblEstado.setText("Sección: Biblioteca");
+    }
+
+    /**
+     * Gestiona la acción del botón Añadir.
+     * De momento actualiza la etiqueta de estado.
+     */
+    @FXML
+    private void onAnadir() {
+        lblEstado.setText("Sección: Añadir videojuego");
+    }
+
+    /**
+     * Gestiona la acción del botón Perfil.
+     * De momento actualiza la etiqueta de estado.
+     */
+    @FXML
+    private void onPerfil() {
+        lblEstado.setText("Sección: Perfil");
+    }
+
+    /**
+     * Gestiona la acción realizada sobre el Hyperlink.
+     *
+     * De momento se mantiene preparado para incorporar posteriormente
+     * el acceso a información adicional sobre el videojuego.
+     */
+    @FXML
+    private void onEnlaceInfo() {
+        enlaceInfo.setVisited(false);
+    }
 }
