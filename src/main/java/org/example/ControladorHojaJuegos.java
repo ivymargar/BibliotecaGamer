@@ -4,6 +4,7 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import java.io.IOException;
 
 public class ControladorHojaJuegos {
 
