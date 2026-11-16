@@ -100,6 +100,28 @@ public class BibliotecaGamerController {
     @FXML
     private Label lblEstado;
 
+// ==========================================================
+// CONFIGURACIÓN DE PAGINATION
+// Adaptación del componente desarrollado por Iván Márquez
+// al ListView principal de Biblioteca Gamer.
+// ==========================================================
+
+    /**
+     * Número máximo de videojuegos que se muestran
+     * simultáneamente en cada página del ListView.
+     */
+    private static final int JUEGOS_POR_PAGINA = 5;
+
+    /**
+     * Lista que almacena temporalmente todos los videojuegos
+     * correspondientes a la categoría seleccionada en el TreeView.
+     *
+     * Pagination utilizará esta lista para determinar qué juegos
+     * debe mostrar en cada página.
+     */
+    private final java.util.List<String> juegosCategoria =
+            new java.util.ArrayList<>();
+
     /**
      * Inicializa los componentes de la vista.
      *
@@ -234,6 +256,21 @@ public class BibliotecaGamerController {
                 }
             }
         });
+
+        /*
+         * Escuchamos los cambios de página realizados
+         * por el usuario en Pagination.
+         */
+        paginacion.currentPageIndexProperty().addListener(
+                (observable, paginaAnterior, paginaNueva) -> {
+
+                    /*
+                     * Cuando cambia la página, mostramos en el ListView
+                     * los videojuegos correspondientes a la nueva página.
+                     */
+                    mostrarPagina(paginaNueva.intValue());
+                }
+        );
     }
 
     /**
@@ -284,51 +321,156 @@ public class BibliotecaGamerController {
     }
 
     /**
-     * Actualiza el contenido del ListView dependiendo de la
+     * Actualiza los videojuegos disponibles dependiendo de la
      * categoría seleccionada en el TreeView.
+     *
+     * Los videojuegos se almacenan primero en una lista completa.
+     * Posteriormente, Pagination se encarga de mostrar únicamente
+     * los correspondientes a la página seleccionada.
      *
      * @param categoria nombre de la categoría seleccionada
      */
     private void mostrarVideojuegos(String categoria) {
 
         /*
-         * Antes de mostrar nuevos videojuegos limpiamos
-         * el contenido anterior del ListView.
+         * Eliminamos los videojuegos pertenecientes
+         * a la selección anterior.
          */
-        listaVideojuegos.getItems().clear();
+        juegosCategoria.clear();
 
         /*
          * Dependiendo de la categoría seleccionada,
-         * mostramos diferentes videojuegos.
+         * cargamos diez videojuegos diferentes.
          */
         switch (categoria) {
 
             case "Jugando":
-                listaVideojuegos.getItems().addAll(
-                        "Minecraft",
-                        "Hollow Knight",
-                        "Stardew Valley"
+                juegosCategoria.addAll(
+                        java.util.Arrays.asList(
+                                "Minecraft",
+                                "Hollow Knight",
+                                "Stardew Valley",
+                                "Hades",
+                                "Celeste",
+                                "Elden Ring",
+                                "Terraria",
+                                "Dead Cells",
+                                "Cuphead",
+                                "Subnautica"
+                        )
                 );
                 break;
 
             case "Terminados":
-                listaVideojuegos.getItems().addAll(
-                        "Resident Evil 4",
-                        "Portal 2",
-                        "The Last of Us"
+                juegosCategoria.addAll(
+                        java.util.Arrays.asList(
+                                "Resident Evil 4",
+                                "Portal 2",
+                                "The Last of Us",
+                                "God of War",
+                                "The Witcher 3",
+                                "Resident Evil 2",
+                                "BioShock",
+                                "Undertale",
+                                "Detroit: Become Human",
+                                "Life is Strange"
+                        )
                 );
                 break;
 
             case "Pendientes":
-                listaVideojuegos.getItems().addAll(
-                        "Baldur's Gate 3",
-                        "Celeste",
-                        "Dark Souls"
+                juegosCategoria.addAll(
+                        java.util.Arrays.asList(
+                                "Baldur's Gate 3",
+                                "Dark Souls",
+                                "Cyberpunk 2077",
+                                "Horizon Zero Dawn",
+                                "Sekiro",
+                                "Death Stranding",
+                                "Control",
+                                "Alan Wake 2",
+                                "Outer Wilds",
+                                "Disco Elysium"
+                        )
                 );
                 break;
 
             default:
+                /*
+                 * Si se selecciona un elemento que no representa
+                 * una categoría, dejamos la lista vacía.
+                 */
                 break;
+        }
+
+        /*
+         * Calculamos cuántas páginas necesitamos.
+         * Cada página puede mostrar un máximo de cinco juegos.
+         */
+        int totalPaginas = (int) Math.ceil(
+                (double) juegosCategoria.size() / JUEGOS_POR_PAGINA
+        );
+
+        /*
+         * Pagination debe disponer como mínimo de una página.
+         */
+        paginacion.setPageCount(Math.max(totalPaginas, 1));
+
+        /*
+         * Siempre volvemos a la primera página cuando
+         * seleccionamos una categoría diferente.
+         */
+        paginacion.setCurrentPageIndex(0);
+
+        /*
+         * Mostramos los primeros cinco videojuegos.
+         */
+        mostrarPagina(0);
+    }
+
+    /**
+     * Muestra en el ListView únicamente los videojuegos
+     * correspondientes a la página seleccionada.
+     *
+     * Cada página muestra como máximo cinco videojuegos.
+     *
+     * @param indicePagina índice de la página seleccionada,
+     *                     comenzando desde 0
+     */
+    private void mostrarPagina(int indicePagina) {
+
+        /*
+         * Calculamos la posición del primer videojuego
+         * correspondiente a la página seleccionada.
+         *
+         * Página 0 -> posición 0
+         * Página 1 -> posición 5
+         */
+        int inicio = indicePagina * JUEGOS_POR_PAGINA;
+
+        /*
+         * Calculamos la posición final.
+         * Math.min evita superar el tamaño real de la lista.
+         */
+        int fin = Math.min(
+                inicio + JUEGOS_POR_PAGINA,
+                juegosCategoria.size()
+        );
+
+        /*
+         * Limpiamos los videojuegos de la página anterior.
+         */
+        listaVideojuegos.getItems().clear();
+
+        /*
+         * Añadimos únicamente los videojuegos comprendidos
+         * entre las posiciones inicio y fin.
+         */
+        for (int i = inicio; i < fin; i++) {
+
+            listaVideojuegos.getItems().add(
+                    juegosCategoria.get(i)
+            );
         }
     }
 

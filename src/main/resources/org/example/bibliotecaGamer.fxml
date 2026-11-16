@@ -59,7 +59,7 @@
    <bottom>
       <VBox prefHeight="100.0" prefWidth="100.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Pagination prefHeight="200.0" prefWidth="200.0" />
+            <Pagination fx:id="paginacion" prefHeight="200.0" prefWidth="200.0" />
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
                <children>
                   <Hyperlink fx:id="enlaceInfo" onAction="#onEnlaceInfo" text=" 🌐 Más información sobre el videojuego" />
