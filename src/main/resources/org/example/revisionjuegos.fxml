@@ -19,7 +19,7 @@
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ControladorHojaJuegos">
    <children>
-      <Label alignment="CENTER" prefHeight="45.0" prefWidth="600.0" style="-fx-background-color: #E1E5E5;" text="INFORMACIÓN DEL JUEGO">
+      <Label alignment="CENTER" prefHeight="45.0" prefWidth="600.0" style="-fx-background-color: #E1E5E5;" text="AÑADIR O ACTUALIZAR JUEGO">
          <font>
             <Font size="25.0" />
          </font>
@@ -116,7 +116,13 @@
          </children>
       </HBox>
       <CheckBox fx:id="Completado" mnemonicParsing="false" text="Completado" />
-      <Button fx:id="Atras" alignment="CENTER_RIGHT" contentDisplay="TOP" mnemonicParsing="false" onAction="#IrAtras" text="Atrás" />
+      <HBox alignment="CENTER" prefHeight="36.0" prefWidth="600.0">
+         <children>
+            <Button fx:id="Atras" alignment="CENTER_RIGHT" contentDisplay="TOP" mnemonicParsing="false" onAction="#IrAtras" text="Atrás" />
+            <Button fx:id="Guardar" alignment="CENTER_RIGHT" contentDisplay="TOP" mnemonicParsing="false" onAction="#GuardarJuego" text="Guardar" />
+
+         </children>
+      </HBox>
    </children>
    <padding>
       <Insets bottom="10.0" />
