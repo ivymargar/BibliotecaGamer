@@ -1,4 +1,4 @@
-package org.example;
+package org.example.controlador;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -6,8 +6,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.example.modelo.BibliotecaJuegosModelo;
+import org.example.modelo.VideojuegoModelo;
+
 import java.io.IOException;
-import java.util.Optional;
 
 public class BibliotecaGamerController {
 
@@ -43,7 +45,7 @@ public class BibliotecaGamerController {
 
     private static final int JUEGOS_POR_PAGINA = 5;
 
-    private BibliotecaJuegos biblio = new BibliotecaJuegos();
+    private BibliotecaJuegosModelo biblio = new BibliotecaJuegosModelo();
 
     private final java.util.List<String> juegosCategoria =
             new java.util.ArrayList<>();
@@ -51,15 +53,15 @@ public class BibliotecaGamerController {
     @FXML
     public void initialize() {
 
-        biblio.anadirJuego(new Videojuego(
+        biblio.anadirJuego(new VideojuegoModelo(
                 "Minecraft", 2009, "Mojang Studios", "PC", "Sandbox"
         ));
 
-        biblio.anadirJuego(new Videojuego(
+        biblio.anadirJuego(new VideojuegoModelo(
                 "Hollow Knight", 2016, "Team Cherry", "PC", "Metroidvania"
         ));
 
-        biblio.anadirJuego(new Videojuego(
+        biblio.anadirJuego(new VideojuegoModelo(
                 "Stardew Valley", 2016, "ConcernedApe", "PC", "Juego de Granjas"
         ));
 
@@ -124,7 +126,7 @@ public class BibliotecaGamerController {
 
                 if (juegoSeleccionado != null) {
 
-                    for (Videojuego juego : biblio.getJuegos()) {
+                    for (VideojuegoModelo juego : biblio.getJuegos()) {
 
                         // Comprobamos que el juego coincide con el seleccionado.
                         if (juego.getNombre().equals(juegoSeleccionado)) {
@@ -164,7 +166,7 @@ public class BibliotecaGamerController {
         try {
 
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("revisionjuegos.fxml")
+                    getClass().getResource("/org/example/revisionjuegos.fxml")
             );
 
             Parent root = loader.load();
@@ -296,7 +298,7 @@ public class BibliotecaGamerController {
         try {
 
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("revisionjuegos.fxml")
+                    getClass().getResource("/org/example/revisionjuegos.fxml")
             );
 
             Parent root = loader.load();
