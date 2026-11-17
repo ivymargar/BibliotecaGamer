@@ -15,4 +15,14 @@ public class BibliotecaJuegos {
         juegos.add(juego);
     }
 
+    /**
+     * Devuelve la lista de videojuegos almacenados
+     * actualmente en la biblioteca.
+     *
+     * @return lista de videojuegos de la biblioteca
+     */
+    public ArrayList<Videojuego> getJuegos() {
+        return juegos;
+    }
+
 }
