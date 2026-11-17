@@ -37,10 +37,11 @@ public class ControladorHojaJuegos {
     @FXML
     private Button Atras;
 
-    BibliotecaJuegos biblio=new BibliotecaJuegos();
-    Videojuego juego1=new Videojuego("Minecraft",2009,"Mojang Studios","PC","Sandbox");
-    Videojuego juego2=new Videojuego("Hollow Knight",2016,"Team Cherry","PC","Metroidvania");
-    Videojuego juego3= new Videojuego("Stardew Valley",2016,"ConcernedApe","PC","Juego de Granjas");
+    @FXML
+    private Button Guardar;
+
+    private BibliotecaJuegos biblio;
+    private String nombreJuego;
     /**
      * Metodo que se activa al iniciar el programa.
      * El metodo ayuda a configurar las partes del programa para evitar errores.
@@ -50,9 +51,7 @@ public class ControladorHojaJuegos {
      */
     @FXML
     private void initialize(){
-        biblio.anadirJuego(juego1);
-        biblio.anadirJuego(juego2);
-        biblio.anadirJuego(juego3);
+
         HBoxLogros.setOpacity(0);
         MiPuntuacion.textProperty().bind(
                 Bindings.format("%.1f",Puntuacion.valueProperty())
@@ -89,10 +88,152 @@ public class ControladorHojaJuegos {
                 )
         );
     }
+
     @FXML
     private void IrAtras() throws IOException {
         Stage stage = (Stage) Atras.getScene().getWindow();
 
         stage.close();
+    }
+
+    /**
+     *
+     * @throws IOException
+     *  Metodo encargado de guardar y editar los juegos del array de bibliotecajuegos
+     *  con un for each se comprueba si el juego a añadir ya existe o no
+     *  En caso de que exista y el juego se haya mantenido intacto salta una alerta avisando que el juego ya existe
+     *  En caso de que exista pero alguno de sus apartados haya sido modificado,actualizará los datos del juego,saltando
+     *  aviso de que el juego ha sido actualizado.
+     *  En caso de que no exista el juego,lo añadirá al arraylist y saltará un aviso diciendo que el juego fue añadido con éxito
+     */
+    @FXML
+    private void GuardarJuego() throws IOException {
+
+        boolean existe = false;
+
+        for (Videojuego juego : biblio.getJuegos()) {
+
+            if (juego.getNombre().equalsIgnoreCase(Nombre.getText().trim())
+            && juego.getAnosalida()==Integer.parseInt(Salida.getText())
+            && juego.getDesarrollador().equalsIgnoreCase(Desarrollador.getText())
+            && juego.getGenero().equalsIgnoreCase(Genero.getText())
+            && juego.getPlataforma().equalsIgnoreCase(Plataforma.getText())) {
+                IrAtras();
+                existe = true;
+                break;
+            }else if(juego.getNombre().equalsIgnoreCase(Nombre.getText().trim())
+                    && (juego.getAnosalida()!=Integer.parseInt(Salida.getText())
+                    || !juego.getDesarrollador().equalsIgnoreCase(Desarrollador.getText())
+                    || !juego.getGenero().equalsIgnoreCase(Genero.getText())
+                    || !juego.getPlataforma().equalsIgnoreCase(Plataforma.getText()))) {
+
+                juego.setAnosalida(Integer.parseInt(Salida.getText()));
+                juego.setDesarrollador(Desarrollador.getText());
+                juego.setGenero(Genero.getText());
+                juego.setPlataforma(Plataforma.getText());
+
+                Alert alerta=new Alert(Alert.AlertType.INFORMATION);
+                alerta.setTitle("Videojuego actualizado");
+                alerta.setHeaderText(null);
+                alerta.setContentText("Este videojuego ha sido actualizado con éxito");
+                alerta.showAndWait();
+                IrAtras();
+                break;
+            }
+        }
+
+        if (existe) {
+
+            Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+            alerta.setTitle("Videojuego existente");
+            alerta.setHeaderText(null);
+            alerta.setContentText("Este videojuego ya está en la biblioteca.");
+            alerta.showAndWait();
+            IrAtras();
+
+        } else {
+
+            try {
+
+                // Comprobamos que los campos no estén vacíos.
+                if (Nombre.getText().isBlank()
+                        || Salida.getText().isBlank()
+                        || Desarrollador.getText().isBlank()
+                        || Plataforma.getText().isBlank()
+                        || Genero.getText().isBlank()) {
+
+                    throw new IllegalArgumentException();
+                }
+
+                // Creamos el nuevo videojuego.
+                Videojuego nuevoJuego = new Videojuego(
+                        Nombre.getText().trim(),
+                        Integer.parseInt(Salida.getText()),
+                        Desarrollador.getText().trim(),
+                        Plataforma.getText().trim(),
+                        Genero.getText().trim()
+                );
+
+                // Lo añadimos a la biblioteca compartida.
+                biblio.anadirJuego(nuevoJuego);
+
+                Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+                alerta.setTitle("Videojuego guardado");
+                alerta.setHeaderText(null);
+                alerta.setContentText("El videojuego se ha añadido correctamente.");
+                alerta.showAndWait();
+                IrAtras();
+            } catch (NumberFormatException e) {
+
+                Alert alerta = new Alert(Alert.AlertType.ERROR);
+                alerta.setTitle("Error");
+                alerta.setHeaderText(null);
+                alerta.setContentText("Introduce un año de salida válido.");
+                alerta.showAndWait();
+
+            } catch (IllegalArgumentException e) {
+
+                Alert alerta = new Alert(Alert.AlertType.ERROR);
+                alerta.setTitle("Error");
+                alerta.setHeaderText(null);
+                alerta.setContentText("Debes rellenar todos los campos.");
+                alerta.showAndWait();
+            }
+        }
+    }
+    public void setBiblioteca(BibliotecaJuegos biblio) {
+        this.biblio = biblio;
+    }
+
+    public void setNombreJuego(String nombreJuego) {
+        this.nombreJuego = nombreJuego;
+        buscarJuego();
+    }
+
+    /**
+     * Metodo para localizar el juego en el array y poner la información del mismo para mostrarla.
+     */
+    private void buscarJuego() {
+
+        for (Videojuego juego : biblio.getJuegos()) {
+
+            if (juego.getNombre().equalsIgnoreCase(nombreJuego)) {
+
+                Nombre.setText(juego.getNombre());
+                Salida.setText(String.valueOf(juego.getAnosalida()));
+                Desarrollador.setText(juego.getDesarrollador());
+                Plataforma.setText(juego.getPlataforma());
+                Genero.setText(juego.getGenero());
+
+                return;
+            }
+        }
+
+        // Si no encuentra el videojuego, dejamos los campos preparados.
+        Nombre.setText(nombreJuego);
+        Salida.clear();
+        Desarrollador.clear();
+        Plataforma.clear();
+        Genero.clear();
     }
 }
