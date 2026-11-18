@@ -14,7 +14,7 @@ import java.io.IOException;
  * Se encarga de iniciar la aplicación JavaFX y cargar
  * la vista principal bibliotecaGamer.fxml.
  *
- * @author Leo Martínez, Dani Merino, Iván y JuanMa
+ * @author Leo Martínez, Dani Merino, Iván Márquez y Juan Manuel Cuadrado
  */
 public class App extends Application {
 
