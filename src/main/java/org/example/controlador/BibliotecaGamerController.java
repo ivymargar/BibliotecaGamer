@@ -8,8 +8,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.example.modelo.BibliotecaJuegosModelo;
 import org.example.modelo.VideojuegoModelo;
-
 import java.io.IOException;
+import org.example.App;
 
 public class BibliotecaGamerController {
 
@@ -136,13 +136,33 @@ public class BibliotecaGamerController {
                             alerta.setTitle("Información del juego");
                             alerta.setHeaderText(null);
 
-                            alerta.setContentText(
+                            String informacion =
                                     "Nombre del juego: " + juego.getNombre() + "\n" +
-                                            "Año de Salida: " + juego.getAnosalida() + "\n" +
+                                            "Año de salida: " + juego.getAnosalida() + "\n" +
                                             "Desarrollador: " + juego.getDesarrollador() + "\n" +
                                             "Plataforma: " + juego.getPlataforma() + "\n" +
-                                            "Género: " + juego.getGenero()
-                            );
+                                            "Género: " + juego.getGenero() + "\n" +
+                                            "Mi puntuación: " +
+                                            String.format("%.1f", juego.getPuntuacion()) + " / 10\n" +
+                                            "Completado: " +
+                                            (juego.isCompletado() ? "Sí" : "No") + "\n" +
+                                            "Tiene logros: " +
+                                            (juego.isTieneLogros() ? "Sí" : "No");
+
+                            /*
+                             * Si el videojuego tiene logros, mostramos también
+                             * el progreso conseguido por el usuario.
+                             */
+                            if (juego.isTieneLogros()) {
+
+                                informacion +=
+                                        "\nLogros completados: "
+                                                + juego.getLogrosCompletados()
+                                                + " de "
+                                                + juego.getLogrosTotales();
+                            }
+
+                            alerta.setContentText(informacion);
 
                             alerta.showAndWait();
 
@@ -159,6 +179,12 @@ public class BibliotecaGamerController {
                     mostrarPagina(paginaNueva.intValue());
                 }
         );
+
+        /*
+         * Limitamos el número máximo de indicadores visibles
+         * para evitar que Pagination ocupe demasiado espacio.
+         */
+        paginacion.setMaxPageIndicatorCount(5);
     }
 
     private void abrirInformacionJuego(String juego) {
@@ -247,6 +273,27 @@ public class BibliotecaGamerController {
                                 "Disco Elysium"
                         )
                 );
+
+                /*
+                 * Incorporamos también los videojuegos añadidos
+                 * por el usuario desde el formulario.
+                 *
+                 * No añadimos los tres videojuegos iniciales porque
+                 * pertenecen a la categoría Jugando.
+                 */
+                for (VideojuegoModelo juego : biblio.getJuegos()) {
+
+                    String nombre = juego.getNombre();
+
+                    boolean esJuegoInicial =
+                            nombre.equalsIgnoreCase("Minecraft")
+                                    || nombre.equalsIgnoreCase("Hollow Knight")
+                                    || nombre.equalsIgnoreCase("Stardew Valley");
+
+                    if (!esJuegoInicial && !juegosCategoria.contains(nombre)) {
+                        juegosCategoria.add(nombre);
+                    }
+                }
                 break;
 
             default:
@@ -283,6 +330,57 @@ public class BibliotecaGamerController {
         }
     }
 
+    /**
+     * Actualiza el catálogo después de añadir o modificar
+     * un videojuego desde la pantalla de gestión.
+     *
+     * Recarga los nombres de todos los videojuegos almacenados
+     * actualmente en la biblioteca compartida y actualiza
+     * Pagination para mostrar el resultado.
+     */
+    private void actualizarBiblioteca() {
+
+        /*
+         * Limpiamos la lista utilizada por Pagination
+         * para reconstruirla con los datos reales
+         * almacenados en la biblioteca.
+         */
+        juegosCategoria.clear();
+
+        /*
+         * Incorporamos todos los videojuegos almacenados
+         * actualmente en la biblioteca compartida.
+         */
+        for (VideojuegoModelo juego : biblio.getJuegos()) {
+
+            juegosCategoria.add(juego.getNombre());
+        }
+
+        /*
+         * Calculamos nuevamente el número de páginas.
+         */
+        int totalPaginas = (int) Math.ceil(
+                (double) juegosCategoria.size() / JUEGOS_POR_PAGINA
+        );
+
+        paginacion.setPageCount(
+                Math.max(totalPaginas, 1)
+        );
+
+        /*
+         * Mostramos la primera página del catálogo actualizado.
+         */
+        paginacion.setCurrentPageIndex(0);
+
+        mostrarPagina(0);
+
+        System.out.println("=== JUEGOS DE LA CATEGORÍA ===");
+        System.out.println(juegosCategoria);
+
+        System.out.println("=== ELEMENTOS DEL LISTVIEW ===");
+        System.out.println(listaVideojuegos.getItems());
+    }
+
     @FXML
     private void onInicio() {
         lblEstado.setText("Sección: Inicio");
@@ -316,7 +414,17 @@ public class BibliotecaGamerController {
             stage.setScene(scene);
             stage.setTitle("Añadir videojuego");
 
-            stage.show();
+            /*
+             * Mostramos la ventana y esperamos hasta que el usuario
+             * termine de añadir o actualizar el videojuego.
+             */
+            stage.showAndWait();
+
+            /*
+             * Cuando se cierra la ventana, actualizamos los videojuegos
+             * mostrados en la Biblioteca Gamer.
+             */
+            actualizarBiblioteca();
 
         } catch (IOException e) {
 
@@ -326,9 +434,44 @@ public class BibliotecaGamerController {
         lblEstado.setText("Sección: Añadir videojuego");
     }
 
+    /**
+     * Abre la pantalla de perfil del usuario que
+     * ha iniciado sesión en Biblioteca Gamer.
+     */
     @FXML
     private void onPerfil() {
-        lblEstado.setText("Sección: Perfil");
+
+        try {
+
+            /*
+             * Cargamos la pantalla de Perfil.
+             */
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/org/example/perfil-view.fxml")
+            );
+
+            Parent root = loader.load();
+
+            /*
+             * Obtenemos el controlador asociado al perfil
+             * para poder enviarle el nombre del usuario.
+             */
+            PerfilController controlador = loader.getController();
+
+            controlador.setUsuario(
+                    App.getUsuarioActual()
+            );
+
+            /*
+             * Sustituimos la pantalla actual por la pantalla
+             * de Perfil utilizando la misma ventana.
+             */
+            App.setRoot(root);
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
     }
 
     @FXML

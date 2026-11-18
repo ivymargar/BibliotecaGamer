@@ -58,22 +58,58 @@ public class ControladorHojaJuegos {
         MiPuntuacion.textProperty().bind(
                 Bindings.format("%.1f",Puntuacion.valueProperty())
         );
-        LogrosCompletados.textProperty().addListener((observable,valorAnterior,valorNuevo)->{
-            try{
-                int completados=Integer.parseInt(valorNuevo);
-                int totales=Integer.parseInt(LogrosTotales.getText());
+        /*
+         * Controlamos que el número de logros completados
+         * sea un número válido y no pueda ser negativo.
+         *
+         * La comparación entre logros completados y logros
+         * totales se realizará posteriormente al guardar.
+         */
+        /*
+         * Controlamos que el número de logros completados
+         * sea un número válido y no pueda ser negativo.
+         */
+        LogrosCompletados.textProperty().addListener(
+                (observable, valorAnterior, valorNuevo) -> {
 
-                if(completados>totales) {
-                    LogrosCompletados.setText(String.valueOf(totales));
-                }else if (completados<0){
-                    LogrosCompletados.setText("0");
-                }else if(totales<0){
-                    LogrosTotales.setText("0");
+                    try {
+
+                        /*
+                         * Si el campo comienza por 0 y el usuario
+                         * introduce más números, eliminamos el cero inicial.
+                         *
+                         * Ejemplo:
+                         * 015 -> 15
+                         */
+                        if (valorNuevo.length() > 1
+                                && valorNuevo.startsWith("0")) {
+
+                            LogrosCompletados.setText(
+                                    valorNuevo.substring(1)
+                            );
+
+                            return;
+                        }
+
+                        int completados = Integer.parseInt(valorNuevo);
+
+                        /*
+                         * No permitimos números negativos.
+                         */
+                        if (completados < 0) {
+                            LogrosCompletados.setText("0");
+                        }
+
+                    } catch (NumberFormatException e) {
+
+                        /*
+                         * Si se introduce un valor no numérico,
+                         * restauramos el valor anterior.
+                         */
+                        LogrosCompletados.setText(valorAnterior);
+                    }
                 }
-            }catch (NumberFormatException e){
-                LogrosCompletados.setText("0");
-            }
-        });
+        );
     }
 
     /**
@@ -167,7 +203,7 @@ public class ControladorHojaJuegos {
                     throw new IllegalArgumentException();
                 }
 
-                // Creamos el nuevo videojuego.
+                // Creamos el nuevo videojuego con los datos principales.
                 VideojuegoModelo nuevoJuego = new VideojuegoModelo(
                         Nombre.getText().trim(),
                         Integer.parseInt(Salida.getText()),
@@ -176,7 +212,52 @@ public class ControladorHojaJuegos {
                         Genero.getText().trim()
                 );
 
-                // Lo añadimos a la biblioteca compartida.
+                /*
+                 * Guardamos también los datos personales introducidos
+                 * mediante Slider y CheckBox.
+                 */
+                nuevoJuego.setPuntuacion(Puntuacion.getValue());
+                nuevoJuego.setTieneLogros(Logros.isSelected());
+                nuevoJuego.setCompletado(Completado.isSelected());
+
+                /*
+                 * Si el videojuego tiene logros, guardamos también
+                 * los logros completados y los logros totales.
+                 */
+                if (Logros.isSelected()) {
+
+                    int completados =
+                            Integer.parseInt(LogrosCompletados.getText());
+
+                    int totales =
+                            Integer.parseInt(LogrosTotales.getText());
+
+                    /*
+                     * No permitimos que los logros completados
+                     * sean superiores al número total de logros.
+                     */
+                    if (completados > totales) {
+
+                        Alert alerta = new Alert(Alert.AlertType.ERROR);
+                        alerta.setTitle("Error");
+                        alerta.setHeaderText(null);
+                        alerta.setContentText(
+                                "Los logros completados no pueden ser superiores " +
+                                        "a los logros totales."
+                        );
+                        alerta.showAndWait();
+
+                        return;
+                    }
+
+                    nuevoJuego.setLogrosCompletados(completados);
+                    nuevoJuego.setLogrosTotales(totales);
+                }
+
+                /*
+                 * Añadimos el videojuego completo
+                 * a la biblioteca compartida.
+                 */
                 biblio.anadirJuego(nuevoJuego);
 
                 Alert alerta = new Alert(Alert.AlertType.INFORMATION);

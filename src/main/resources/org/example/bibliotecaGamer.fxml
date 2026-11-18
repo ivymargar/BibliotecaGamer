@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
@@ -14,59 +15,169 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controlador.BibliotecaGamerController">
-   <left>
-      <VBox prefHeight="600.0" prefWidth="220.0" spacing="10.0" BorderPane.alignment="TOP_CENTER">
-         <children>
-            <Label text="MI BIBLIOTECA">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <TreeView fx:id="arbolBiblioteca" prefHeight="500.0" prefWidth="210.0" />
-         </children>
-      </VBox>
-   </left>
-   <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="TOP_CENTER">
-         <children>
-            <Label text="MIS VIDEOJUEGOS">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <ListView fx:id="listaVideojuegos" prefHeight="400.0" prefWidth="400.0" />
-         </children>
-      </VBox>
-   </center>
-   <top>
-      <ToolBar fx:id="barraNavegacion" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <items>
-            <Label text="🎮 GAME VAULT">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <Separator orientation="VERTICAL" prefHeight="45.0" />
-            <Pane prefHeight="45.0" prefWidth="450.0" />
-            <Button fx:id="btnInicio" mnemonicParsing="false" onAction="#onInicio" text="Inicio" />
-            <Button fx:id="btnBiblioteca" mnemonicParsing="false" onAction="#onBiblioteca" text="Biblioteca" />
-            <Button fx:id="btnAnadir" mnemonicParsing="false" onAction="#onAnadir" text="Añadir" />
-            <Button fx:id="btnPerfil" mnemonicParsing="false" onAction="#onPerfil" text="Perfil" />
-        </items>
-      </ToolBar>
-   </top>
-   <bottom>
-      <VBox prefHeight="100.0" prefWidth="100.0" spacing="5.0" BorderPane.alignment="CENTER">
-         <children>
-            <Pagination fx:id="paginacion" prefHeight="200.0" prefWidth="200.0" />
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
-               <children>
-                  <Hyperlink fx:id="enlaceInfo" onAction="#onEnlaceInfo" text=" 🌐 Más información sobre el videojuego" />
-                  <Label fx:id="lblEstado" text="Sección: Biblioteca" />
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-   </bottom>
+<BorderPane maxHeight="-Infinity"
+            maxWidth="-Infinity"
+            minHeight="-Infinity"
+            minWidth="-Infinity"
+            prefHeight="600.0"
+            prefWidth="900.0"
+            xmlns="http://javafx.com/javafx/26"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.controlador.BibliotecaGamerController">
+
+    <!-- ================================================== -->
+    <!-- BARRA SUPERIOR DE NAVEGACIÓN                      -->
+    <!-- ================================================== -->
+
+    <top>
+        <ToolBar fx:id="barraNavegacion"
+                 prefHeight="45.0"
+                 BorderPane.alignment="CENTER">
+
+            <items>
+
+                <Label text="🎮 BIBLIOTECA GAMER">
+                    <font>
+                        <Font name="System Bold" size="18.0"/>
+                    </font>
+                </Label>
+
+                <Separator orientation="VERTICAL"
+                           prefHeight="35.0"/>
+
+                <Pane prefHeight="40.0"
+                      prefWidth="420.0"/>
+
+                <Button fx:id="btnInicio"
+                        mnemonicParsing="false"
+                        onAction="#onInicio"
+                        text="Inicio"/>
+
+                <Button fx:id="btnBiblioteca"
+                        mnemonicParsing="false"
+                        onAction="#onBiblioteca"
+                        text="Biblioteca"/>
+
+                <Button fx:id="btnAnadir"
+                        mnemonicParsing="false"
+                        onAction="#onAnadir"
+                        text="Añadir"/>
+
+                <Button fx:id="btnPerfil"
+                        mnemonicParsing="false"
+                        onAction="#onPerfil"
+                        text="Perfil"/>
+
+            </items>
+
+        </ToolBar>
+    </top>
+
+
+    <!-- ================================================== -->
+    <!-- ÁRBOL DE LA BIBLIOTECA                            -->
+    <!-- ================================================== -->
+
+    <left>
+        <VBox prefWidth="220.0"
+              spacing="10.0"
+              BorderPane.alignment="TOP_CENTER">
+
+            <children>
+
+                <Label text="MI BIBLIOTECA">
+                    <font>
+                        <Font name="System Bold" size="18.0"/>
+                    </font>
+                </Label>
+
+                <TreeView fx:id="arbolBiblioteca"
+                          prefWidth="210.0"/>
+
+            </children>
+
+        </VBox>
+    </left>
+
+
+    <!-- ================================================== -->
+    <!-- LISTA DE VIDEOJUEGOS                              -->
+    <!-- ================================================== -->
+
+    <center>
+        <VBox spacing="10.0"
+              BorderPane.alignment="TOP_CENTER">
+
+            <children>
+
+                <Label text="MIS VIDEOJUEGOS">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+
+                <ListView fx:id="listaVideojuegos"
+                          prefWidth="400.0"/>
+
+            </children>
+
+        </VBox>
+    </center>
+
+
+    <!-- ================================================== -->
+    <!-- PAGINACIÓN E INFORMACIÓN INFERIOR                 -->
+    <!-- ================================================== -->
+
+    <bottom>
+
+        <BorderPane prefHeight="110.0"
+                    minHeight="110.0"
+                    maxHeight="110.0"
+                    BorderPane.alignment="CENTER">
+
+            <padding>
+                <Insets top="5.0"
+                        right="30.0"
+                        bottom="5.0"
+                        left="15.0"/>
+            </padding>
+
+            <!-- Información externa -->
+            <left>
+
+                <Hyperlink fx:id="enlaceInfo"
+                           onAction="#onEnlaceInfo"
+                           text="🌐 Más información sobre el videojuego"
+                           BorderPane.alignment="CENTER_LEFT"/>
+
+            </left>
+
+            <!-- Pagination -->
+            <center>
+
+                <Pagination fx:id="paginacion"
+                            minHeight="60.0"
+                            prefHeight="60.0"
+                            maxHeight="60.0"
+                            minWidth="300.0"
+                            prefWidth="300.0"
+                            maxWidth="300.0"
+                            BorderPane.alignment="CENTER"/>
+
+            </center>
+
+            <!-- Sección actual -->
+            <right>
+
+                <Label fx:id="lblEstado"
+                       text="Sección: Biblioteca"
+                       BorderPane.alignment="CENTER_RIGHT"/>
+
+            </right>
+
+        </BorderPane>
+
+    </bottom>
+
 </BorderPane>
