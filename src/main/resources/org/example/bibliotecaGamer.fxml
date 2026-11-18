@@ -62,7 +62,7 @@
             <Pagination fx:id="paginacion" prefHeight="200.0" prefWidth="200.0" />
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
                <children>
-                  <Hyperlink fx:id="enlaceInfo" onAction="#onEnlaceInfo" text=" 🌐 Más información sobre el videojuego" />
+                  <Hyperlink fx:id="enlaceInfo" onAction="#onEnlaceInfo" text="Web de valoraciones de videojuegos." />
                   <Label fx:id="lblEstado" text="Sección: Biblioteca" />
                </children>
             </HBox>

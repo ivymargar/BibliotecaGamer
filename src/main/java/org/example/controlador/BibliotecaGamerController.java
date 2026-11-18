@@ -1,5 +1,6 @@
 package org.example.controlador;
 
+import javafx.application.HostServices;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
@@ -333,6 +334,10 @@ public class BibliotecaGamerController {
 
     @FXML
     private void onEnlaceInfo() {
-        enlaceInfo.setVisited(false);
+        try {
+            new ProcessBuilder("cmd", "/c", "start", "https://vandal.elespanol.com/analisis/videojuegos").start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
