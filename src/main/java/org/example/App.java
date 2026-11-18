@@ -17,7 +17,7 @@ import java.io.IOException;
  * También permite cambiar entre las diferentes vistas
  * de la aplicación.
  *
- * @author Leo Martínez, Dani Merino, Iván y Juan
+ * @author Leo Martínez, Dani Merino, Iván Márquez y Juan Manuel Cuadrado
  */
 public class App extends Application {
 
